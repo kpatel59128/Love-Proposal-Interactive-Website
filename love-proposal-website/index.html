@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Do you love me?</title>
+  <style>
+    :root{
+      --bg1:#ffd6e7; /* soft pink */
+      --bg2:#ff9ac0; /* rosy pink */
+      --card:#ffffff;
+      --text:#2b2b2b;
+      --muted:#6b7280;
+      --yes:#16a34a;
+      --no:#ef4444;
+      --accent:#ff4d6d;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,"Noto Sans",sans-serif;color:var(--text)}
+    body{
+      background: radial-gradient(1200px 800px at 50% -200px,var(--bg2),var(--bg1));
+      display:grid;place-items:center;overflow:hidden;
+    }
+    .hearts{position:fixed;inset:0;pointer-events:none;z-index:0}
+    .hearts span{position:absolute;opacity:.45;animation:float 12s linear infinite}
+    @keyframes float{0%{transform:translateY(100vh) scale(.9);opacity:.0} 10%{opacity:.35} 100%{transform:translateY(-10vh) scale(1.15);opacity:0}}
+    .card{position:relative;z-index:1;background:var(--card);width:min(680px,92vw);padding:34px 28px;border-radius:26px;box-shadow:0 12px 32px rgba(0,0,0,.12)}
+    .title{margin:0 0 6px;font-size:2rem;line-height:1.2;text-align:center;color:#e11d48}
+    .subtitle{margin:0 0 20px;text-align:center;color:var(--muted)}
+    .question{font-size:2.2rem;text-align:center;margin:22px 0 26px;font-weight:700}
+    .row{display:flex;justify-content:center;gap:16px;flex-wrap:wrap}
+    button{border:0;border-radius:999px;padding:14px 24px;font-size:1.05rem;cursor:pointer;transition:transform .08s ease, box-shadow .2s ease, background .2s ease}
+    button:active{transform:translateY(1px)}
+    .btn-yes{background:var(--yes);color:#fff;box-shadow:0 8px 16px rgba(22,163,74,.35)}
+    .btn-no{background:var(--no);color:#fff;box-shadow:0 8px 16px rgba(239,68,68,.35)}
+    .footer{margin-top:16px;text-align:center;font-size:.9rem;color:var(--muted)}
+  </style>
+</head>
+<body>
+  <div class="hearts" aria-hidden="true"></div>
+  <main class="card" role="main">
+    <h1 class="title">Hey Krish ❤️</h1>
+    <p class="subtitle">I made this little page for one honest question.</p>
+    <section id="onlyQuestion">
+      <p class="question">Do you love me?</p>
+      <div class="row">
+        <button class="btn-yes" id="yesBtn">Yes</button>
+        <button class="btn-no" id="noBtn">No</button>
+      </div>
+      <div class="footer">Just answer with your heart. No pressure. 💗</div>
+    </section>
+  </main>
+  <script>
+    const heartBox = document.querySelector('.hearts');
+    const heartChars = ['❤','💖','💗','💓','💞','💘'];
+    for(let i=0;i<40;i++){
+      const s = document.createElement('span');
+      s.textContent = heartChars[Math.floor(Math.random()*heartChars.length)];
+      s.style.left = Math.random()*100 + 'vw';
+      s.style.animationDelay = (Math.random()*10) + 's';
+      s.style.animationDuration = (10 + Math.random()*12) + 's';
+      s.style.fontSize = (14 + Math.random()*22) + 'px';
+      heartBox.appendChild(s);
+    }
+    function openPage(html, title='Love'){
+      const win = window.open('', '_blank');
+      if(!win){ alert('Please allow pop-ups to see the next page.'); return; }
+      win.document.open();
+      win.document.write(html.replace('%TITLE%', title));
+      win.document.close();
+    }
+    function shell(content){
+      return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>%TITLE%</title><style>:root{--bg1:#ffd6e7;--bg2:#ff9ac0;--card:#fff;--text:#2b2b2b;--muted:#6b7280;--yes:#16a34a;--no:#ef4444}html,body{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;color:var(--text)}body{background: radial-gradient(1200px 800px at 50% -200px,var(--bg2),var(--bg1));display:grid;place-items:center}.card{background:var(--card);width:min(800px,92vw);padding:36px 30px;border-radius:26px;box-shadow:0 12px 32px rgba(0,0,0,.12)}h1{text-align:center;color:#e11d48}p{line-height:1.6}.center{text-align:center}.letter{white-space:pre-wrap;font-size:1.05rem}</style></head><body><main class="card">${content}</main></body></html>`;
+    }
+    function yesPage(){
+      const letter = `Dear Krish,
+
+You said yes, and I can’t stop smiling. Here’s why I like you:
+
+I like the way you make even the simplest moments feel special. Your laughter makes my day lighter. The way you listen makes me feel valued. You’re kind not just to me, but to everyone you meet. I admire your curiosity, your patience, and the calm you bring when the world feels loud.
+
+I like the way your eyes light up when you talk about things you love. I notice the small things you do without expecting praise. I like that you’re honest, even when it’s hard. I like that you care enough to remember the little details about me.
+
+You make me want to be the best version of myself. You inspire me to dream bigger, laugh louder, and love deeper. Thank you for being you. I’m lucky to know you.
+
+With love,
+Me`;
+      const html = shell(`<h1>Why I Like You</h1><div class="letter">${letter}</div>`);
+      openPage(html,'Why I Like You');
+    }
+    function surePage(){
+      const content = `<h1>Are you sure?</h1><p class="center">It’s okay to be honest. I’ll respect your answer.</p><div class="row"><button class="btn-yes" id="sureYes">Yes, I’m sure</button><button class="btn-no" id="sureNo">No</button></div><script>function openPage(html, title){const w=window.open('','_blank');if(!w){alert('Please allow pop-ups.');return;}w.document.open();w.document.write(html.replace('%25TITLE%25',title));w.document.close();}function shell(c){return \`<!DOCTYPE html><html><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>%25TITLE%25</title><style>:root{--bg1:#ffd6e7;--bg2:#ff9ac0;--card:#fff;--text:#2b2b2b;--muted:#6b7280;--no:#ef4444}html,body{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;color:var(--text)}body{background: radial-gradient(1200px 800px at 50% -200px,var(--bg2),var(--bg1));display:grid;place-items:center}.card{background:var(--card);width:min(720px,92vw);padding:34px;border-radius:26px;box-shadow:0 12px 32px rgba(0,0,0,.12)}h1{text-align:center;color:#e11d48}.center{text-align:center}.letter{white-space:pre-wrap;line-height:1.6}</style></head><body><main class='card'>\`+c+\`</main></body></html>\`}document.getElementById('sureNo').addEventListener('click',()=>{const letter=\`Dear Krish,\n\nThank you for being honest. You deserve someone who matches your heart without doubt or pressure. I want you to be happy — truly happy — even if that’s not with me.\n\nTake care, Krish.\n— From me\`;const html=shell(\`<h1>You deserve better</h1><div class='letter'>\${letter}</div>\`);openPage(html,'You deserve better');});document.getElementById('sureYes').addEventListener('click',()=>{const html=shell(\`<h1>Thank you</h1><p class='center'>I understand and respect your answer. Wishing you happiness ahead.</p>\`);openPage(html,'Thank you');});<\/script>`;
+      openPage(shell(content),'Are you sure?');
+    }
+    document.getElementById('yesBtn').addEventListener('click', yesPage);
+    document.getElementById('noBtn').addEventListener('click', surePage);
+  </script>
+</body>
+</html>
